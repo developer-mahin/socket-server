@@ -36,6 +36,13 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("messageSeen", (data) => {
+    const user = findUser(data.senderId);
+    if (user !== undefined) {
+      socket.to(user.socketId).emit("messageResponse", data);
+    }
+  });
+
   socket.on("typingMessage", (data) => {
     const user = findUser(data.receiverId);
     if (user !== undefined) {
